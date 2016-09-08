@@ -1,0 +1,64 @@
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven { url "https://repo.spring.io/snapshot" }
+        maven { url "https://repo.spring.io/milestone" }
+    }
+
+    dependencies {
+        classpath('org.springframework.boot:spring-boot-gradle-plugin:1.2.0.M2')
+        classpath('au.com.dius:pact-jvm-provider-gradle_2.11:3.3.0')
+        classpath('com.github.jengelman.gradle.plugins:gradle-processes:0.3.0')
+    }
+}
+
+apply plugin: "java"
+apply plugin: 'spring-boot'
+apply plugin: 'au.com.dius.pact'
+apply plugin: 'com.github.johnrengelman.processes'
+
+mainClassName = 'com.example.microservices.provider.Application'
+
+dependencies {
+    compile 'org.springframework.boot:spring-boot-starter-web:1.2.0.M2'
+    testCompile 'junit:junit:4.11'
+    testCompile 'org.springframework:spring-test:4.0.6.RELEASE'
+    testCompile 'com.jayway.restassured:rest-assured:2.3.4'
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+}
+
+task startProvider(type: com.github.jengelman.gradle.plugins.processes.tasks.JavaFork) {
+    classpath += sourceSets.main.runtimeClasspath
+    main = 'com.example.microservices.provider.Application'
+    doLast {
+        Thread.sleep(10000)
+    }
+}
+
+task stopProvider << {
+    startProvider.processHandle.abort()
+}
+
+pact {
+    serviceProviders {
+        Product_Provider {
+            startProviderTask = 'startProvider'
+            terminateProviderTask = 'stopProvider'
+            protocol = 'http'
+            host = 'localhost'
+            port = 10100
+            path = '/'
+            hasPactWith('service-consumer') {
+                pactFile = file('../service-consumer/target/pacts/Product_Consumer-Product_Provider.json')
+            }
+//            hasPactsFromPactBroker('http://your-pact-broker.org')
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+}

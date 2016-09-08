@@ -1,0 +1,11 @@
+allprojects {
+    apply plugin: "idea"
+
+    repositories {
+        mavenCentral()
+    }
+
+    task wrapper(type: Wrapper) {
+        gradleVersion = '2.3'
+    }
+}
