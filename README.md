@@ -1,9 +1,9 @@
 # Spring Boot Microservices with Pact-JVM
 
-This project contains a *very simple* demo of using http://martinfowler.com/articles/consumerDrivenContracts.html[consumer-driven contracts] to verify the interactions between microservices.
-It leverages http://projects.spring.io/spring-boot[Spring Boot] for both the provider and consumer services.
+This project contains a *very simple* demo of using [consumer-driven contracts](http://martinfowler.com/articles/consumerDrivenContracts.html) to verify the interactions between microservices.
+It leverages [Spring Boot](http://projects.spring.io/spring-boot) for both the provider and consumer services.
 
-Testing is achieved using the https://github.com/DiUS/pact-jvm[pact-jvm] project, which is a JVM port of the original https://github.com/realestate-com-au/pact[pact].
+Testing is achieved using the [pact-jvm](https://github.com/DiUS/pact-jvm project), which is a JVM port of the original [Pact](https://github.com/realestate-com-au/pact).
 
 ## Running the Demo
 
@@ -13,7 +13,7 @@ Testing is achieved using the https://github.com/DiUS/pact-jvm[pact-jvm] project
     $ cd service-consumer && ./gradlew test
 ```
 
-This will result in the creation of a https://github.com/realestate-com-au/pact/wiki/Terminology#pact-file[pact file] called `Product_Consumer-Product_Provider.json` at `service-consumer/target/pacts/`.  Here's a current example:
+This will result in the creation of a [Pact JSON](https://github.com/realestate-com-au/pact/wiki/Terminology#pact-file) called `Product_Consumer-Product_Provider.json` at `service-consumer/target/pacts/`.  Here's a current example:
 
 ```console
 {
@@ -54,7 +54,7 @@ This will result in the creation of a https://github.com/realestate-com-au/pact/
 ```
 
 
-By virtue of the fact that these tests pass, we know that the `service-consumer` app interacts appropriately with the contract as defined in link:service-consumer/src/test/java/com/example/microservices/consumer/repository/ProductRepositoryTest.java[ProductRepositoryTest.java]
+By virtue of the fact that these tests pass, we know that the `service-consumer` app interacts appropriately with the contract as defined in [ProductRepositoryTest.java](./service-consumer/src/test/java/com/example/microservices/consumer/repository/ProductRepositoryTest.java)
 
 ### Step 2 - we want to verify that the `service-provider` app actually provides the expected contract.
 
